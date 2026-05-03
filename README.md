@@ -1,5 +1,5 @@
 # Projecto Taller
-## autores
+## Autores
 - Diego Fernández
 - Gabriel Poblete
 - Dalma Redoles
