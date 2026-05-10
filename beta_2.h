@@ -12,6 +12,8 @@ struct nodoDoble{
 }; 
 typedef struct nodoDoble nodo;
 
+//hola
+
 // Agrega un elemento al final de la lista
 void push_back(nodo** R, string dato){
     // crea el nodo y le asigna sus respectivos valores
