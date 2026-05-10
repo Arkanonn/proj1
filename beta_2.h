@@ -37,11 +37,14 @@ void push_back(nodo** R, string dato){
 // imprime la lista completa
 void printLista(nodo *R){
     nodo *p = R;
+    int cont = 0;
     while (p != nullptr) {
         cout << p->palabra << "  ";
         p = p->right;
+        cont++;
     }
     cout << endl;
+    cout << "y tiene: " << cont << " nodos." << endl;
 }
 
 // buscara el "dato" en la lista R 
