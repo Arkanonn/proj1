@@ -61,3 +61,33 @@ bool Search(nodo *R, string dato){
     
     return true;
 }
+
+// Busca en una grilla
+bool superSearch(nodo* R, string valor){
+    // si la lista esta vacia
+    if (R == nullptr){
+        return false;
+    }
+    // si el valor es menor a la primera palabra
+    if (R->palabra > valor){
+        return false;
+    }
+
+    // si el valor es igual a la primera palabra return true;
+    if (R->palabra == valor){
+        return true;
+    }
+    
+    // si a la derecha del primer nodo es nulo
+    if (R->right == nullptr) return superSearch(R->up, valor);
+    nodo* p = R;
+
+    while (p->right->right != nullptr && valor > p->right->palabra) p = p->right;
+
+    if (p->palabra != valor && p->right == nullptr) return superSearch(p->up, valor);
+    if (p->right != nullptr && p->right->palabra > valor) return superSearch(p->up, valor);
+    if (p->right != nullptr && p->right->palabra < valor) return superSearch(p->right->up, valor);
+    if (p->right != nullptr && p->right->palabra == valor) return true;
+    return false;
+
+}
