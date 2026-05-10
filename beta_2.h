@@ -44,7 +44,8 @@ void printLista(nodo *R){
         cont++;
     }
     cout << endl;
-    cout << "y tiene: " << cont << " nodos." << endl;
+    cout << "y tiene: " << cont << " nodos.";
+    cout << endl;
 }
 
 // buscara el "dato" en la lista R 
