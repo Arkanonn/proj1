@@ -2,21 +2,79 @@
 // en el archivo donde se hara la grulla hay que hacer #include "beta_2.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
+constexpr int K = 8;
 // estructura de los nodos a utilizar
 struct nodoDoble{
-    string palabra;
-    nodoDoble* up; // nodo superior
-    nodoDoble* right; // nodo a la derecha
+    string key;
+    nodoDoble* up = nullptr; // nodo superior
+    nodoDoble* right = nullptr; // nodo a la derecha
 }; 
 typedef struct nodoDoble nodo;
+
+void grilla(nodo** R){
+    // Se abre el diccionario uno
+    ifstream dicc1;
+    dicc1.open("D1.txt");
+    long count = 0;
+    
+    if (dicc1.is_open()){
+        // Se inserta cada palabra a un nodo del primer nivel
+        string linea;
+        nodo* s = nullptr;
+        while (getline(dicc1, linea)){
+            nodo* q = new nodo;
+            q->key = linea;
+            if (*R == nullptr)
+                *R =  q;
+            else
+                s->right = q;
+            s = q;
+            count++;
+            
+        }
+    }
+    dicc1.close();
+    
+    // Seguimos para i niveles
+    long n = count;
+    int niveles = 1;
+    
+    while(n > K){
+        int contador = 0;
+
+        nodo* p = *R;
+
+        nodo* s = nullptr;
+        while(p != nullptr){
+            if (contador % K == 0){
+                nodo* q = new nodo;
+                q->key = p->key;
+                if (s == nullptr)
+                    *R = q;
+                else
+                    s->right = q;
+                q->up = p;
+                s = q;
+                
+            }
+            p = p->right;
+            contador++;
+        }
+        // El nivel tiene n nodos
+        n = (n + K - 1)/K;
+        niveles++;
+    }
+
+}
 
 // Agrega un elemento al final de la lista
 void push_back(nodo** R, string dato){
     // crea el nodo y le asigna sus respectivos valores
     nodo* nuevo = new nodo;
-    nuevo->palabra = dato;
+    nuevo->key = dato;
     nuevo->up = nullptr;
     nuevo->right = nullptr;
     
@@ -39,7 +97,7 @@ void printLista(nodo *R){
     nodo *p = R;
     int cont = 0;
     while (p != nullptr) {
-        cout << p->palabra << "  ";
+        cout << p->key << "  ";
         p = p->right;
         cont++;
     }
@@ -51,11 +109,11 @@ void printLista(nodo *R){
 // buscara el "dato" en la lista R 
 // Solo funcionara bien si el dato a buscar es mayor al primer elemento de la lista
 bool Search(nodo *R, string dato){
-    if (dato < R->palabra){
+    if (dato < R->key){
         return false;
     }
     nodo *p = R;
-    while (p != nullptr && p->palabra != dato) p = p->right;
+    while (p != nullptr && p->key != dato) p = p->right;
     
     if (p == nullptr) return false;
     
@@ -69,12 +127,12 @@ bool superSearch(nodo* R, string valor){
         return false;
     }
     // si el valor es menor a la primera palabra
-    if (R->palabra > valor){
+    if (R->key > valor){
         return false;
     }
 
     // si el valor es igual a la primera palabra return true;
-    if (R->palabra == valor){
+    if (R->key == valor){
         return true;
     }
     
@@ -82,12 +140,12 @@ bool superSearch(nodo* R, string valor){
     if (R->right == nullptr) return superSearch(R->up, valor);
     nodo* p = R;
 
-    while (p->right->right != nullptr && valor > p->right->palabra) p = p->right;
+    while (p->right->right != nullptr && valor > p->right->key) p = p->right;
 
-    if (p->palabra != valor && p->right == nullptr) return superSearch(p->up, valor);
-    if (p->right != nullptr && p->right->palabra > valor) return superSearch(p->up, valor);
-    if (p->right != nullptr && p->right->palabra < valor) return superSearch(p->right->up, valor);
-    if (p->right != nullptr && p->right->palabra == valor) return true;
+    if (p->key != valor && p->right == nullptr) return superSearch(p->up, valor);
+    if (p->right != nullptr && p->right->key > valor) return superSearch(p->up, valor);
+    if (p->right != nullptr && p->right->key < valor) return superSearch(p->right->up, valor);
+    if (p->right != nullptr && p->right->key == valor) return true;
     return false;
     
 }
