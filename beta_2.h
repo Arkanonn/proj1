@@ -14,18 +14,23 @@ typedef struct nodoDoble nodo;
 
 // Agrega un elemento al final de la lista
 void push_back(nodo** R, string dato){
+    // crea el nodo y le asigna sus respectivos valores
     nodo* nuevo = new nodo;
     nuevo->palabra = dato;
     nuevo->up = nullptr;
     nuevo->right = nullptr;
     
+    // si la lista esta vacia el nuevo nodo sera la raiz
     if (*R == nullptr){
         *R = nuevo;
         return;
     } 
-
+    
+    // recorre hasta el final nodo final
     nodo *p = *R;
     while (p->right != nullptr) p = p->right;
+
+    // inserta el nuevo nodo a su derecha
     p->right = nuevo;    
 }
 
