@@ -89,5 +89,5 @@ bool superSearch(nodo* R, string valor){
     if (p->right != nullptr && p->right->palabra < valor) return superSearch(p->right->up, valor);
     if (p->right != nullptr && p->right->palabra == valor) return true;
     return false;
-
+    
 }
