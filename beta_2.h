@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-constexpr int K = 8;
+constexpr int K = 2;
 // estructura de los nodos a utilizar
 struct nodoDoble{
     string key;
@@ -17,7 +17,7 @@ typedef struct nodoDoble nodo;
 void grilla(nodo** R){
     // Se abre el diccionario uno
     ifstream dicc1;
-    dicc1.open("D1.txt");
+    dicc1.open("prueba.txt");
     long count = 0;
     
     if (dicc1.is_open()){
@@ -94,16 +94,18 @@ void push_back(nodo** R, string dato){
 
 // imprime la lista completa
 void printLista(nodo *R){
+    if (R == nullptr) return;
     nodo *p = R;
     int cont = 0;
     while (p != nullptr) {
-        cout << p->key << "  ";
+        cout << p->key << " -> ";
         p = p->right;
         cont++;
     }
     cout << endl;
-    cout << "y tiene: " << cont << " nodos.";
-    cout << endl;
+    //cout << "y tiene: " << cont << " nodos.";
+    //cout << endl;
+    printLista(R->up);
 }
 
 // buscara el "dato" en la lista R 
