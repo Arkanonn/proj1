@@ -9,8 +9,8 @@ constexpr int K = 2;
 // estructura de los nodos a utilizar
 struct nodoDoble{
     string key;
-    nodoDoble* up = nullptr; // nodo superior
-    nodoDoble* right = nullptr; // nodo a la derecha
+    nodoDoble* up; // nodo superior
+    nodoDoble* right; // nodo a la derecha
 }; 
 typedef struct nodoDoble nodo;
 
