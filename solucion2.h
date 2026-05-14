@@ -11,7 +11,7 @@ int contE = 0;
 struct nodoDoble{ 
     string key;
     nodoDoble* up = nullptr; // nodo superior
-    nodoDoble* right = nullptr; // nodo a la derecha
+    nodoDoble* right = nullptr; // nodo a la derecha 
 }; 
 typedef struct nodoDoble nodo;
 

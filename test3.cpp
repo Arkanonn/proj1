@@ -12,13 +12,6 @@ int main(){
     printLista(raiz);
     
     cout << "=========================" << endl;
-    
-    removeL(&raiz, "arbol");
-    printLista(raiz);
-
-    cout << "=========================" << endl;
-    string palabra = "bosque";
-    if (removeL(&raiz, palabra)) cout << "Se elimino: " << palabra << endl;
-    else cout << "No se elimino: " << palabra << endl; 
+    insert(&raiz, "abaco");
     printLista(raiz);
 }
