@@ -5,9 +5,10 @@
 #include <fstream>
 using namespace std;
 
-constexpr int K = 8;
+const int K = 2;
+int contE = 0;
 // estructura de los nodos a utilizar
-struct nodoDoble{
+struct nodoDoble{ 
     string key;
     nodoDoble* up = nullptr; // nodo superior
     nodoDoble* right = nullptr; // nodo a la derecha
@@ -17,7 +18,7 @@ typedef struct nodoDoble nodo;
 void grilla(nodo** R){
     // Se abre el diccionario uno
     ifstream dicc1;
-    dicc1.open("D1.txt");
+    dicc1.open("prueba.txt");
     long count = 0;
     
     if (dicc1.is_open()){
@@ -94,16 +95,18 @@ void push_back(nodo** R, string dato){
 
 // imprime la lista completa
 void printLista(nodo *R){
+    if (R == nullptr) return;
+    printLista(R->up);
     nodo *p = R;
     int cont = 0;
     while (p != nullptr) {
-        cout << p->key << "  ";
+        cout << p->key << " -> ";
         p = p->right;
         cont++;
     }
     cout << endl;
-    cout << "y tiene: " << cont << " nodos.";
-    cout << endl;
+    //cout << "y tiene: " << cont << " nodos.";
+    //cout << endl;
 }
 
 // buscara el "dato" en la lista R 
@@ -146,6 +149,58 @@ bool superSearch(nodo* R, string valor){
     if (p->right != nullptr && p->right->key > valor) return superSearch(p->up, valor);
     if (p->right != nullptr && p->right->key < valor) return superSearch(p->right->up, valor);
     if (p->right != nullptr && p->right->key == valor) return true;
-    return false;
+    return false;   
+}
+
+// Si el elemento x esta en la lista lo remueve y retorna true
+// si no retorna false
+// si el x esta en la raiz entonces no se eliminara y retorna false
+bool removeL(nodo** R, string valor){
+    // si R esta vacio
+    if (*R == nullptr){
+        return false;
+    }
+
+    // si el valor a eliminar es menor al primero
+    if (valor < (*R)->key){
+        return false;
+    }
+
+    // si el valor es igual a la primera palabra return false;
+    if ((*R)->key == valor){
+        return false;
+    }
+
+    // si a la derecha del primer nodo es nulo
+    if ((*R)->right == nullptr) {
+        return removeL(&((*R)->up), valor);
+    }
+    nodo* p = *R;
     
+    // deja p en el nodo menor al nodo del valor si es que esta o no
+    while (p->right->right != nullptr && valor > p->right->key) p = p->right;
+
+    // si puntero derecho es nulo sube
+    if (p->key != valor && p->right == nullptr) {
+        return removeL(&(p->up), valor);
+    }
+    
+    // si el valor del puntero derecho es mayor al valor sube arriba del menor
+    if ( p->right->key > valor) {
+        return removeL(&(p->up), valor);
+    }
+    
+    if (p->right->key < valor) {
+        return removeL(&(p->right->up), valor);
+    }
+    
+    
+    if (p->right->key == valor) {
+        nodo* aux = p->right;
+        removeL(&(p->up), valor);
+        p->right = aux->right;
+        delete aux;
+        return true;
+    }
+    return false;   
 }
