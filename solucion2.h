@@ -8,6 +8,7 @@ using namespace std;
 # define K 2
 int inserciones = 0;
 int niveles = 0;
+int cantN = 0;
 // estructura de los nodos a utilizar
 struct nodoDoble{
     string key;
@@ -35,6 +36,7 @@ void grilla(nodo** R, string referencia){
                 s->right = q;
             s = q;
             count++;
+            cantN++;
             
         }
         niveles++;
@@ -60,6 +62,7 @@ void grilla(nodo** R, string referencia){
                     s->right = q;
                 q->up = p;
                 s = q;
+                cantN++;
                 
             }
             p = p->right;
@@ -118,13 +121,14 @@ bool Search(nodo* R, string valor){
 }
 
 void insertarNodo(nodo **R, string nueva_key){
-    cout << "Insertando nodo.." << endl;
+    //cout << "Insertando nodo.." << endl;
     nodo* q = new nodo;
     q->key = nueva_key;
     // si la lista esta vacia
     if (*R == nullptr){
         *R = q;
         inserciones++;
+        cantN++;
         return;
     }
     
@@ -144,6 +148,7 @@ void insertarNodo(nodo **R, string nueva_key){
                 q = q->up;
             }
             p = p->up;
+            cantN++;
             inserciones++;
         }
         return;
@@ -180,6 +185,7 @@ void insertarNodo(nodo **R, string nueva_key){
         q->right = p->right;
         p->right = q;
         inserciones++;
+        cantN++;
         return;
     }
       
@@ -234,6 +240,7 @@ bool removeL(nodo** R, string valor){
         removeL(&(p->up), valor);
         p->right = aux->right;
         delete aux;
+        cantN--;
         return true;
     }
     return false;   
