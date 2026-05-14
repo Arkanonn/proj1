@@ -7,7 +7,7 @@ int main(){
     cout << "=========================" << endl;
     
     nodo* raiz = nullptr;
-    grilla(&raiz);
+    grilla(&raiz, "prueba.txt");
     cout << "IMPRIMIENDO..." << endl;
     printLista(raiz);
     
@@ -17,7 +17,7 @@ int main(){
     printLista(raiz);
 
     cout << "=========================" << endl;
-    string palabra = "bosque";
+    string palabra = "Izquierda";
     if (removeL(&raiz, palabra)) cout << "Se elimino: " << palabra << endl;
     else cout << "No se elimino: " << palabra << endl; 
     printLista(raiz);

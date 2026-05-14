@@ -94,7 +94,7 @@ int main(){
     cout << "tiene: " << cantN << " nodos." << endl;
     cout << "Y pesa: " << (int)sizeof(nodo)*cantN << " bytes." << endl;
     
-    cout << "================== Fin :3 ====================" << endl;
+    cout << "================== Fin :3 =====================" << endl;
     
     cout << "Peso final: " << (float)sizeof(nodo)*cantN/1000000 << " megabytes." << endl;
 

@@ -7,11 +7,12 @@ int main(){
     cout << "=========================" << endl;
     
     nodo* raiz = nullptr;
-    grilla(&raiz);
+    grilla(&raiz, "prueba.txt");
     cout << "IMPRIMIENDO..." << endl;
     printLista(raiz);
     
     cout << "=========================" << endl;
-    insert(&raiz, "abaco");
+    insertarNodo(&raiz, "A");
     printLista(raiz);
+    cout << raiz->key << endl;
 }

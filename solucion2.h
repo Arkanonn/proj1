@@ -154,7 +154,7 @@ void insertarNodo(nodo **R, string nueva_key){
         return;
     }
     /*
-    // si nueva key es igual a la primera palabra
+    /// si nueva key es igual a la primera palabra
     if ((*R)->key == nueva_key){
         cout << "if es igual" << endl;
         nodo *r = *R;
