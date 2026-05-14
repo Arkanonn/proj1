@@ -97,6 +97,7 @@ void push_back(nodo** R, string dato){
 // imprime la lista completa
 void printLista(nodo *R){
     if (R == nullptr) return;
+    printLista(R->up);
     nodo *p = R;
     int cont = 0;
     while (p != nullptr) {
@@ -107,7 +108,6 @@ void printLista(nodo *R){
     cout << endl;
     //cout << "y tiene: " << cont << " nodos.";
     //cout << endl;
-    printLista(R->up);
 }
 
 // buscara el "dato" en la lista R 
@@ -151,7 +151,6 @@ bool superSearch(nodo* R, string valor){
     if (p->right != nullptr && p->right->key < valor) return superSearch(p->right->up, valor);
     if (p->right != nullptr && p->right->key == valor) return true;
     return false;
-
 }
 
 void insertarNodo(nodo **R, string nueva_key){
@@ -220,4 +219,59 @@ void insertarNodo(nodo **R, string nueva_key){
         return;
     }
     
+}
+    return false;   
+}
+
+// Si el elemento x esta en la lista lo remueve y retorna true
+// si no retorna false
+// si el x esta en la raiz entonces no se eliminara y retorna false
+bool removeL(nodo** R, string valor){
+    // si R esta vacio
+    if (*R == nullptr){
+        return false;
+    }
+
+    // si el valor a eliminar es menor al primero
+    if (valor < (*R)->key){
+        return false;
+    }
+
+    // si el valor es igual a la primera palabra return false;
+    if ((*R)->key == valor){
+        return false;
+    }
+
+    // si a la derecha del primer nodo es nulo
+    if ((*R)->right == nullptr) {
+        return removeL(&((*R)->up), valor);
+    }
+    nodo* p = *R;
+    
+    // deja p en el nodo menor al nodo del valor si es que esta o no
+    while (p->right->right != nullptr && valor > p->right->key) p = p->right;
+
+    // si puntero derecho es nulo sube
+    if (p->key != valor && p->right == nullptr) {
+        return removeL(&(p->up), valor);
+    }
+    
+    // si el valor del puntero derecho es mayor al valor sube arriba del menor
+    if ( p->right->key > valor) {
+        return removeL(&(p->up), valor);
+    }
+    
+    if (p->right->key < valor) {
+        return removeL(&(p->right->up), valor);
+    }
+    
+    
+    if (p->right->key == valor) {
+        nodo* aux = p->right;
+        removeL(&(p->up), valor);
+        p->right = aux->right;
+        delete aux;
+        return true;
+    }
+    return false;   
 }
