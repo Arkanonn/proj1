@@ -5,7 +5,7 @@
 #include <fstream>
 using namespace std;
 
-# define K 4
+# define K 2
 int inserciones = 0;
 int niveles = 0;
 // estructura de los nodos a utilizar
@@ -16,10 +16,10 @@ struct nodoDoble{
 }; 
 typedef struct nodoDoble nodo;
 
-void grilla(nodo** R){
+void grilla(nodo** R, string referencia){
     // Se abre el diccionario uno
     ifstream dicc1;
-    dicc1.open("prueba.txt");
+    dicc1.open(referencia);
     long count = 0;
     
     if (dicc1.is_open()){
@@ -72,28 +72,6 @@ void grilla(nodo** R){
 
 }
 
-// Agrega un elemento al final de la lista
-void push_back(nodo** R, string dato){
-    // crea el nodo y le asigna sus respectivos valores
-    nodo* nuevo = new nodo;
-    nuevo->key = dato;
-    nuevo->up = nullptr;
-    nuevo->right = nullptr;
-    
-    // si la lista esta vacia el nuevo nodo sera la raiz
-    if (*R == nullptr){
-        *R = nuevo;
-        return;
-    } 
-    
-    // recorre hasta el final nodo final
-    nodo *p = *R;
-    while (p->right != nullptr) p = p->right;
-
-    // inserta el nuevo nodo a su derecha
-    p->right = nuevo;    
-}
-
 // imprime la lista completa
 void printLista(nodo *R){
     if (R == nullptr) return;
@@ -110,22 +88,8 @@ void printLista(nodo *R){
     //cout << endl;
 }
 
-// buscara el "dato" en la lista R 
-// Solo funcionara bien si el dato a buscar es mayor al primer elemento de la lista
-bool Search(nodo *R, string dato){
-    if (dato < R->key){
-        return false;
-    }
-    nodo *p = R;
-    while (p != nullptr && p->key != dato) p = p->right;
-    
-    if (p == nullptr) return false;
-    
-    return true;
-}
-
 // Busca en una grilla
-bool superSearch(nodo* R, string valor){
+bool Search(nodo* R, string valor){
     // si la lista esta vacia
     if (R == nullptr){
         return false;
@@ -141,14 +105,14 @@ bool superSearch(nodo* R, string valor){
     }
     
     // si a la derecha del primer nodo es nulo
-    if (R->right == nullptr) return superSearch(R->up, valor);
+    if (R->right == nullptr) return Search(R->up, valor);
     nodo* p = R;
 
     while (p->right->right != nullptr && valor > p->right->key) p = p->right;
 
-    if (p->key != valor && p->right == nullptr) return superSearch(p->up, valor);
-    if (p->right != nullptr && p->right->key > valor) return superSearch(p->up, valor);
-    if (p->right != nullptr && p->right->key < valor) return superSearch(p->right->up, valor);
+    if (p->key != valor && p->right == nullptr) return Search(p->up, valor);
+    if (p->right != nullptr && p->right->key > valor) return Search(p->up, valor);
+    if (p->right != nullptr && p->right->key < valor) return Search(p->right->up, valor);
     if (p->right != nullptr && p->right->key == valor) return true;
     return false;
 }
@@ -184,7 +148,7 @@ void insertarNodo(nodo **R, string nueva_key){
         }
         return;
     }
-    
+    /*
     // si nueva key es igual a la primera palabra
     if ((*R)->key == nueva_key){
         cout << "if es igual" << endl;
@@ -196,7 +160,7 @@ void insertarNodo(nodo **R, string nueva_key){
         inserciones++;
         return;
     }
-
+    */
     nodo* p = *R;
     while (true){
         // Recorre hacia la derecha
@@ -218,9 +182,7 @@ void insertarNodo(nodo **R, string nueva_key){
         inserciones++;
         return;
     }
-    
-}
-    return false;   
+      
 }
 
 // Si el elemento x esta en la lista lo remueve y retorna true
@@ -228,7 +190,7 @@ void insertarNodo(nodo **R, string nueva_key){
 // si el x esta en la raiz entonces no se eliminara y retorna false
 bool removeL(nodo** R, string valor){
     // si R esta vacio
-    if (*R == nullptr){
+    if (R == nullptr || *R == nullptr){
         return false;
     }
 
@@ -256,16 +218,17 @@ bool removeL(nodo** R, string valor){
         return removeL(&(p->up), valor);
     }
     
-    // si el valor del puntero derecho es mayor al valor sube arriba del menor
+    // si la derecha es mayor que el valor, sube desde p
     if ( p->right->key > valor) {
         return removeL(&(p->up), valor);
     }
     
+    // si la derecha es menor al valor, sube desde la derecha
     if (p->right->key < valor) {
         return removeL(&(p->right->up), valor);
     }
     
-    
+    // si la derecha es el valor que busco
     if (p->right->key == valor) {
         nodo* aux = p->right;
         removeL(&(p->up), valor);
