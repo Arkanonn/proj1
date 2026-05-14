@@ -5,10 +5,11 @@
 #include <fstream>
 using namespace std;
 
-const int K = 2;
-int contE = 0;
+# define K 4
+int inserciones = 0;
+int niveles = 0;
 // estructura de los nodos a utilizar
-struct nodoDoble{ 
+struct nodoDoble{
     string key;
     nodoDoble* up = nullptr; // nodo superior
     nodoDoble* right = nullptr; // nodo a la derecha 
@@ -36,12 +37,12 @@ void grilla(nodo** R){
             count++;
             
         }
+        niveles++;
     }
     dicc1.close();
     
     // Seguimos para i niveles
     long n = count;
-    int niveles = 1;
     
     while(n > K){
         int contador = 0;
@@ -149,6 +150,76 @@ bool superSearch(nodo* R, string valor){
     if (p->right != nullptr && p->right->key > valor) return superSearch(p->up, valor);
     if (p->right != nullptr && p->right->key < valor) return superSearch(p->right->up, valor);
     if (p->right != nullptr && p->right->key == valor) return true;
+    return false;
+}
+
+void insertarNodo(nodo **R, string nueva_key){
+    cout << "Insertando nodo.." << endl;
+    nodo* q = new nodo;
+    q->key = nueva_key;
+    // si la lista esta vacia
+    if (*R == nullptr){
+        *R = q;
+        inserciones++;
+        return;
+    }
+    
+    // si nueva key es menor a la primera palabra
+    if ((*R)->key > nueva_key){
+        nodo* p = *R;
+        for (int i=1;i<=niveles;i++){
+            if (i == 1){
+                q->right = p;
+                *R = q;
+            }
+            else{
+                nodo* r = new nodo;
+                r->key = nueva_key;
+                r->right = p;
+                q->up = r;
+                q = q->up;
+            }
+            p = p->up;
+            inserciones++;
+        }
+        return;
+    }
+    
+    // si nueva key es igual a la primera palabra
+    if ((*R)->key == nueva_key){
+        cout << "if es igual" << endl;
+        nodo *r = *R;
+        while (r->up != nullptr)
+            r = r->up;
+        q->right = r->right;
+        r->right = q;
+        inserciones++;
+        return;
+    }
+
+    nodo* p = *R;
+    while (true){
+        // Recorre hacia la derecha
+        while ((p->right) != nullptr && (p->right)->key < nueva_key)   
+            p = p->right;
+
+        // Si puede recorre hacia arriba
+        if (p->up != nullptr)
+            p = p->up;
+        
+        // Else: No se puede subir más
+        else break;
+    }
+    
+    // Insertando nodo
+    if (p->key <= nueva_key){
+        q->right = p->right;
+        p->right = q;
+        inserciones++;
+        return;
+    }
+    
+}
     return false;   
 }
 
