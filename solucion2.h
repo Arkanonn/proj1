@@ -153,19 +153,7 @@ void insertarNodo(nodo **R, string nueva_key){
         }
         return;
     }
-    /*
-    /// si nueva key es igual a la primera palabra
-    if ((*R)->key == nueva_key){
-        cout << "if es igual" << endl;
-        nodo *r = *R;
-        while (r->up != nullptr)
-            r = r->up;
-        q->right = r->right;
-        r->right = q;
-        inserciones++;
-        return;
-    }
-    */
+    
     nodo* p = *R;
     while (true){
         // Recorre hacia la derecha

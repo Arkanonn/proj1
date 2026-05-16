@@ -96,7 +96,7 @@ int main(){
     
     cout << "================== Fin :3 =====================" << endl;
     
-    cout << "Peso final: " << (float)sizeof(nodo)*cantN/1000000 << " megabytes." << endl;
+    cout << "[32mPeso final: " << (float)sizeof(nodo)*cantN/1000000 << " megabytes." << endl;
 
 
     return 0;
