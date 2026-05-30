@@ -1,13 +1,58 @@
 # Projecto Taller
-## Autores
+## Descripción
+La eficiencia es importante a la hora de programar, se busca que el codigo haga lo que tenga que hacer de la manera mas rapida o la mas economica a la hora de usar RAM. El contenido de esta carpeta busca experimentar con distintas soluciones a los problemas de eficiencia, para llegar a una conclusion sobre la conveniencia a la hora de elegir una estructura a utilizar dependiendo del contexto en el que nos manejemos.
+
+## Solucion 1: Arreglo Dinamico
+La Solución 1 consiste en implementar una estructura de datos basada en un arreglo dinámico ordenado lexicográficamente, donde cada celda almacena una palabra. La estructura aumenta automáticamente su capacidad cuando el arreglo se llena, utilizando un overhead para evitar redimensionamientos constantes. Además, la búsqueda se optimiza mediante una adaptación de la búsqueda binaria, acotando primero el rango según la letra inicial de la palabra usando un arreglo auxiliar de índices.
+
+## Solución 2: Grilla de Listas enlazadas
+La solución 2 consiste en una estructura de datos organizada como una grilla multinivel de nodos doblemente enlazados, diseñada para almacenar palabras de manera ordenada y optimizar las búsquedas. Cada nivel permite reducir el espacio de búsqueda mediante saltos entre nodos, mejorando el rendimiento respecto a una lista enlazada tradicional.
+
+## Requisitos
+- Tener el compilador g++ instalado, actualizado y utilizable.
+
+## Pasos
+- 1. Compilar los archivos
+
+Compilar ambas soluciones
+```bash
+make
+```
+o Compilar Solucion 1
+```bash
+make S1
+```
+o Compilar Solucion 2
+```bash
+make S2
+```
+
+- 2. Ejecutar
+
+Ejecutar Solucion 1
+```bash
+./demostracion1
+```
+Ejecutar Solucion 2
+```bash
+./demostracion2
+```
+
+## Estructura de Archivos
+```
+├── demostracion1.cpp
+├── demostracion2.cpp
+├── funciones.cpp
+├── solucion1.h
+├── solucion2.h
+├── makefile
+├── LICENSE
+└── README.md
+```
+  
+## Desarrollado por:
 - Diego Fernández
 - Gabriel Poblete
 - Dalma Redoles
 - Heidi Santisteban
-### Ultima actualizacion: 03-05-26
-## Descripción
-Esta va a ser la descripcion del codigo, lo que hace y un poco de como lo hace
-## Pasos
-- Paso 1
-- ...
-- Paso 2
+  
