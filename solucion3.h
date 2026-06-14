@@ -32,15 +32,16 @@ class arbol{
     nodoT* getRoot();
     int getK();
     bool search(string valor);
-    bool insert(nodoT* r, string valor);
-    bool arbol::insertInNodo(nodoT* r, string key, int i);
+    bool insert(string valor);
+    bool insertInNodo(nodoT** p,string key);
     bool remove(string valor);
+    bool nodoLLeno(nodoT* p);
 
 };
 
 // Crea el arbol vacio
 arbol::arbol(){
-    this->R = NULL;
+    R = NULL;
 }
 
 arbol::arbol(string entradas[], int n){
@@ -61,6 +62,7 @@ void arbol::print(){
     print(R);
     cout << endl;
 }
+
 void arbol::print(nodoT* p){  
     // si es null no imprime nada  
     cout << "|";
@@ -72,7 +74,7 @@ void arbol::print(nodoT* p){
     for (int i = 0; i < p->cantKeys-1; i++){
         cout << p->keys[i] << "-";
     }
-    cout << p->keys[p->cantKeys-1] << "|\033[31m[\033[0m ";
+    if (p->cantKeys != 0)  cout << p->keys[p->cantKeys-1] << "|\033[31m[\033[0m ";
 
     for (int i = 0; i <= K; i++){
         print(p->hijos[i]);
@@ -80,44 +82,57 @@ void arbol::print(nodoT* p){
     cout << "\033[31m ]\033[0m ";
 
 }
+
+bool arbol::nodoLLeno(nodoT* p){
+    return (p->cantKeys == K) ? true : false;
+}
+
+
 // inserta nodos con key = parametro de la funcion
 //retorna true si lo logra, false si no
-bool arbol::insert(nodoT* r, string key){
-    // si nodo vacío
-    if (r->keys[0] == ""){
-        r->keys[0] = key;
-        r->cantKeys++;
+bool arbol::insert(string key){
+    if (R == nullptr){
+        nodoT* nuevo = new nodoT;
+        nuevo->cantKeys++;
+        nuevo->keys[0] = key;
+        for (int i = 0; i <= K; i++){
+            nuevo->hijos[i] = nullptr;
+        }
+        R = nuevo;
         return true;
     }
-    // si key menor a la primera key en nodo
-    if (r->keys[0]> key) return insert(r->hijos[0], key);
-
-    // buscamos indice para insertar y si ya está en nodo => retorna falso
-    int i = r->cantKeys - 1;
-    bool inNodo = false;
-    while (i >=0 && r->keys[i] >= key){
-        if (r->keys[i] == key) inNodo = true;
-        i--;
+    nodoT* q = R;
+    while (q != nullptr){
+        nodoT* p = q;
+        int pos = 0;
+        if (q->keys[0] > key){
+            if (nodoLLeno(q)){
+                p = q;
+                q = q->hijos[0];
+            }
+            else {
+                return insertInNodo(&q, key);
+            }
+        }
+              
     }
-    if (inNodo) return false;
-
-    // si key mayor a la ultima palabra
-    if (r->keys[r->cantKeys - 1] < key){
-        //si nodo lleno inserta en hijo derecho sino inserta en nodo
-        return (r->cantKeys == K) ? (insert(r->hijos[K+1],key)) : (insertInNodo(r, key, i));
-    }
-
-    // si nodo lleno inserta en hijo[i] sino inserta en nodo
-    return (r->cantKeys == K) ? (insert(r->hijos[i+1], key)) : (insertInNodo(r, key, i + 1));
-    
     return false;
 }
-bool arbol::insertInNodo(nodoT* r, string key, int i){
-    for (int j=r->cantKeys; j>i; j--){
-        r->keys[j] = r->keys[j-1];
+bool arbol::insertInNodo(nodoT** p, string key){
+    int pos = 0;
+    nodoT* q = *p;
+    for (int i = 0; i < q->cantKeys-1; i++){
+        if (q->keys[i] == key) return false;
+        if (q->keys[i] < key){
+            pos++;
+        }
+        else break;
     }
-    r->keys[i] = key;
-    r->cantKeys++;
+    for (int i = q->cantKeys; i > pos; i--){
+        q->keys[i] = q->keys[i-1];
+    }
+    q->keys[pos] = key;
+    q->cantKeys++;
     return true;
 }
 
