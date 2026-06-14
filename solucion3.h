@@ -119,7 +119,7 @@ bool arbol::insert(nodoT* r, string key){
     // buscamos indice para insertar y si ya está en nodo => retorna falso
     int i = r->cantKeys - 1;
     bool inNodo = false;
-    while (i >=0 && r->keys[i] > key){
+    while (i >=0 && r->keys[i] >= key){
         if (r->keys[i] == key) inNodo = true;
         i--;
     }
@@ -128,9 +128,9 @@ bool arbol::insert(nodoT* r, string key){
     // si key mayor a la ultima palabra
     if (r->keys[r->cantKeys - 1] < key){
         //si nodo lleno inserta en hijo derecho sino inserta en nodo
-        return (r->cantKeys == K) ? (insert(r->hijos[K+1],key)) : (insertInNodo(r, key,));
+        return (r->cantKeys == K) ? (insert(r->hijos[K+1],key)) : (insertInNodo(r, key, i));
     }
-    
+
     // si nodo lleno inserta en hijo[i] sino inserta en nodo
     return (r->cantKeys == K) ? (insert(r->hijos[i+1], key)) : (insertInNodo(r, key, i + 1));
     
@@ -141,6 +141,7 @@ bool arbol::insertInNodo(nodoT* r, string key, int i){
         r->keys[j] = r->keys[j-1];
     }
     r->keys[i] = key;
+    r->cantKeys++;
     return true;
 }
 // remueve el nodo con el elemento valor
