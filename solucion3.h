@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 const int K = 4; 
@@ -27,15 +28,21 @@ class arbol{
     ~arbol();
 
     // Funciones a utilizar
-    void construye_arbol(nodoT** R);
+    void cargarDiccionario(vector<string>& palabras, int l, int ri);
     void print();
     void print(nodoT* p);
+
     nodoT* getRoot();
-    int getK();
+    int getCantN();
+
     bool search(string valor);
-    bool remove(string valor);
+
+    bool insert(string valor);
     bool insert(nodoT** r, string valor);
-    bool insertInNodo(nodoT** p,string key);
+    bool insertInNodo(nodoT* p,string key);
+    bool binarySearchRec(string* keys, int l, int r, string x);
+
+    bool remove(string valor);
     bool remove(string valor, nodoT* p, int &pos);
     bool nodoLLeno(nodoT* p);
     nodoT* buscarnodo(nodoT*p, string valor );
@@ -62,6 +69,9 @@ arbol::~arbol(){
 // obtiene la raiz
 nodoT* arbol::getRoot(){
     return R;
+}
+int arbol::getCantN(){
+    return cantN;
 }
 
 void arbol::print(){    
@@ -92,7 +102,9 @@ void arbol::print(nodoT* p){
 bool arbol::nodoLLeno(nodoT* p){
     return (p->cantKeys == K) ? true : false;
 }
-
+bool arbol::insert(string valor){
+    return insert(&R, valor);
+}
 
 // inserta nodos con key = parametro de la funcion
 //retorna true si lo logra, false si no
@@ -100,6 +112,7 @@ bool arbol::insert(nodoT** r, string key){
     // si nodo vacío
     if (*r == nullptr){
         *r = new nodoT;
+        cantN++;
         for (int i=0;i<=K;i++) (*r)->hijos[i] = nullptr;
         (*r)->keys[0] = key;
         (*r)->cantKeys++;
@@ -144,7 +157,7 @@ bool arbol::insertInNodo(nodoT* r, string key){
     return true;
 }
 
-bool binarySearchRec(string* keys, int l, int r, string x){
+bool arbol::binarySearchRec(string* keys, int l, int r, string x){
     if (l > r) return false;
     int m = (l + r) / 2;
     if (x < keys[m]) return binarySearchRec(keys, l, m-1, x);
@@ -191,6 +204,9 @@ bool arbol::search(string valor){
     }
     return false;
 }
+bool arbol::remove(string valor){
+    return remove(valor, R, pos);
+}
 bool arbol::remove(string valor, nodoT* p, int &pos){
     p = buscarnodo(R, valor);
 
@@ -216,6 +232,7 @@ bool arbol::remove(string valor, nodoT* p, int &pos){
                 R = nullptr;
             }
             delete p;
+            cantN--;
             return true;
         }
 
